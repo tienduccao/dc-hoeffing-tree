@@ -7,6 +7,8 @@ import weka.core.Instance;
  * Created by duccao on 07/01/16.
  */
 public class DCHoeffdingTree extends AbstractClassifier {
+    private int nMin = 30;
+
     private Node root;
 
     /************************************************************
@@ -28,6 +30,9 @@ public class DCHoeffdingTree extends AbstractClassifier {
         node.update(instance);
 
         // check whether we have to split
+        if (node.getNumOfInstances() % nMin == 0) {
+            attemptToSplit(node, instance);
+        }
     }
 
     @Override
@@ -62,5 +67,9 @@ public class DCHoeffdingTree extends AbstractClassifier {
         }
 
         return new Node(attributes, instance.classAttribute());
+    }
+
+    private void attemptToSplit(Node node, Instance instance) {
+
     }
 }

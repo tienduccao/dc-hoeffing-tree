@@ -101,6 +101,13 @@ public class Node {
         return this.children == null;
     }
 
+    /**
+     * @return Total number of instance in this node
+     */
+    public int getNumOfInstances() {
+        return numOfInstances;
+    }
+
     public Attribute getSplittingAttribute() {
         return splittingAttribute;
     }
