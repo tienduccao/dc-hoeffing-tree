@@ -25,6 +25,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
 
         // find the leaf node and update sufficient stats
         Node node = root.findLeafNode(instance);
+        node.update(instance);
 
         // check whether we have to split
     }
