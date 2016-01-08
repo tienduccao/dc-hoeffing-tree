@@ -115,4 +115,31 @@ public class Node {
     public int[] getClassCounts() {
         return classCounts;
     }
+
+    public int getTotalClassCount() {
+        int totalClassCount = 0;
+        for (int numOfEachClass : getClassCounts()) {
+            totalClassCount += numOfEachClass;
+        }
+
+        return totalClassCount;
+    }
+
+    public Node[] getChildren() {
+        return children;
+    }
+
+    public int getTotalCountOfAttribute(Attribute attribute) {
+        int total = 0;
+        int[][] counts = sufficientStats[attribute.index()];
+
+        for (int j = 0; j < attribute.numValues(); ++j) {
+            for (int k = 0; k < classAttribute.numValues(); ++k) {
+                total += counts[j][k];
+            }
+        }
+
+
+        return total;
+    }
 }

@@ -6,24 +6,36 @@ import weka.core.Attribute;
 public class InformationGain implements SplitFunction {
     @Override
     public double value(Node node, Attribute attribute) {
-        return 0;
+        double parentNodeEntropy = entropy(node, attribute);
+
+        int totalClassCount = 0;
+        for (Node childNode : node.getChildren()) {
+            totalClassCount += childNode.getTotalCountOfAttribute(attribute);
+        }
+
+        double sumChildNodesEntropy = 0;
+        double weight;
+        for (Node childNode : node.getChildren()) {
+            weight = (double) childNode.getTotalCountOfAttribute(attribute) / totalClassCount;
+            sumChildNodesEntropy += entropy(childNode, attribute) * weight;
+        }
+
+        return parentNodeEntropy - sumChildNodesEntropy;
     }
 
     /**
      * @param node
-     * @return Entropy of a node
+     * @param attribute
+     * @return Entropy of a given node and attribute
      */
-    private double entropy(Node node) {
-        int totalClassCount = 0;
-        for (int numOfEachClass : node.getClassCounts()) {
-            totalClassCount += numOfEachClass;
-        }
+    private double entropy(Node node, Attribute attribute) {
+        int totalCount = node.getTotalCountOfAttribute(attribute);
 
         double entropy = 0;
-        double probability;
+        double probabilityOfEachClass;
         for (int numOfEachClass : node.getClassCounts()) {
-            probability = (double) numOfEachClass / totalClassCount;
-            entropy -= probability * Math.log(probability) / Math.log(2);
+            probabilityOfEachClass = (double) numOfEachClass / totalCount;
+            entropy -= probabilityOfEachClass * Math.log(probabilityOfEachClass) / Math.log(2);
         }
 
         return entropy;
