@@ -111,4 +111,8 @@ public class Node {
     public Attribute getSplittingAttribute() {
         return splittingAttribute;
     }
+
+    public int[] getClassCounts() {
+        return classCounts;
+    }
 }
