@@ -57,9 +57,13 @@ public class DCHoeffdingTree extends AbstractClassifier {
 
     @Override
     public double[] getVotesForInstance(Instance instance) {
-        double[] votes = new double[instance.numClasses()];
-        votes[(int) root.findLeafNode(instance).getClassValue()] = 1.0;
-        return votes;
+        if (root != null) {
+            double[] votes = new double[instance.numClasses()];
+            votes[(int) root.findLeafNode(instance).getClassValue()] = 1.0;
+            return votes;
+        }
+
+        return new double[0];
     }
 
     /************************************************************
