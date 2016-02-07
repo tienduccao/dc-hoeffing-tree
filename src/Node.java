@@ -180,4 +180,8 @@ public class Node {
 
         return total;
     }
+
+    public double getClassValue() {
+        return classValue;
+    }
 }
