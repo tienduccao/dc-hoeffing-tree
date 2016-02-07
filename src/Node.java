@@ -128,7 +128,9 @@ public class Node {
             attributeIndex = attribute.index();
             attributeValue = (int) instance.value(attribute);
 
-            sufficientStats[attributeIndex][attributeValue][(int) classValue]++;
+            if (sufficientStats[attributeIndex].length > 0) {
+                sufficientStats[attributeIndex][attributeValue][(int) classValue]++;
+            }
         }
     }
 
