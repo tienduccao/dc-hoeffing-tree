@@ -31,6 +31,21 @@ public class Node {
 
     public Node(Attribute[] attributes, Attribute classAttribute) {
         this.classAttribute = classAttribute;
+
+        int attributeCount = attributes.length;
+        this.classCounts = new int[classAttribute.numValues( )];
+        this.sufficientStats = new int[attributeCount][][];
+        for ( int i = 0; i < attributeCount; i++ )
+        {
+            Attribute attribute = attributes[i];
+            int[][] attributeCounts = new int[attribute.numValues( )][];
+            this.sufficientStats[i] = attributeCounts;
+
+            for ( int j = 0; j < attribute.numValues( ); j++ )
+            {
+                attributeCounts[j] = new int[classAttribute.numValues( )];
+            }
+        }
     }
 
     /**
