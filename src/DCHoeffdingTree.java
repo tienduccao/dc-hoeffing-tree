@@ -3,10 +3,6 @@ import moa.core.Measurement;
 import weka.core.Attribute;
 import weka.core.Instance;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Created by duccao on 07/01/16.
  */
@@ -82,21 +78,28 @@ public class DCHoeffdingTree extends AbstractClassifier {
         int classAttributeIndex = instance.classAttribute().index();
 
         // find 2 attributes with highest values from split function
-        List<Double> values = new ArrayList<>(instance.numAttributes() - 1);
+        double firstValue = Double.MIN_VALUE;
+        double secondValue = Double.MIN_VALUE;
+        Attribute attributeWithHighestValue = null;
         for (int attributeIndex = 0; attributeIndex < instance.numAttributes(); ++attributeIndex) {
             // skip the class attribute
             if (attributeIndex == classAttributeIndex) continue;
 
-            values.add(splitFunction.value(node, instance.attribute(attributeIndex)));
+            Attribute attribute = instance.attribute(attributeIndex);
+            double value = splitFunction.value(node, attribute);
+            if (value > firstValue) {
+                firstValue = value;
+                attributeWithHighestValue = attribute;
+            } else if (value > secondValue) {
+                secondValue = value;
+            }
         }
 
-        Collections.sort(values);
-
-        double delta = values.get(0) - values.get(1);
+        double delta = firstValue - secondValue;
 
         // check to see whether we can split
         if (delta > calculateHoeffdingBound(node, instance)) {
-            // TODO split
+            node.split(attributeWithHighestValue, instance);
         }
     }
 

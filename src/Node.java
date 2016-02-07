@@ -63,6 +63,29 @@ public class Node {
     }
 
     /**
+     * Split this node according to the given attribute and instance
+     * @param attribute
+     * @param instance
+     */
+    public void split(Attribute attribute, Instance instance) {
+        this.splittingAttribute = attribute;
+
+        // get all attributes of this instance
+        int numAttributes = instance.numAttributes( );
+        Attribute[] attributes = new Attribute[numAttributes];
+
+        for ( int i = 0; i < numAttributes; i++ ) {
+            attributes[i] = instance.attribute( i );
+        }
+
+        // generate child nodes
+        this.children = new Node[attribute.numValues()];
+        for (int i = 0; i < attribute.numValues(); ++i) {
+            children[i] = new Node(attributes, classAttribute);
+        }
+    }
+
+    /**
      * Update this node when new instance arrived
      * @param instance
      */
