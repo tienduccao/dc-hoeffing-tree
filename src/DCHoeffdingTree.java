@@ -3,13 +3,22 @@ import moa.core.Measurement;
 import weka.core.Attribute;
 import weka.core.Instance;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by duccao on 07/01/16.
  */
 public class DCHoeffdingTree extends AbstractClassifier {
+    // Configurations
+    private double delta = 0.05;
     private int nMin = 30;
+    private SplitFunction splitFunction = new InformationGain();
 
+    // Variables
     private Node root;
+    double R;   // for calculating the Hoeffding bound
 
     /************************************************************
      *** Methods from AbstractClassifier
@@ -70,6 +79,31 @@ public class DCHoeffdingTree extends AbstractClassifier {
     }
 
     private void attemptToSplit(Node node, Instance instance) {
+        int classAttributeIndex = instance.classAttribute().index();
 
+        // find 2 attributes with highest values from split function
+        List<Double> values = new ArrayList<>(instance.numAttributes() - 1);
+        for (int attributeIndex = 0; attributeIndex < instance.numAttributes(); ++attributeIndex) {
+            // skip the class attribute
+            if (attributeIndex == classAttributeIndex) continue;
+
+            values.add(splitFunction.value(node, instance.attribute(attributeIndex)));
+        }
+
+        Collections.sort(values);
+
+        double delta = values.get(0) - values.get(1);
+
+        // check to see whether we can split
+        if (delta > calculateHoeffdingBound(node, instance)) {
+            // TODO split
+        }
+    }
+
+    private double calculateHoeffdingBound(Node node, Instance instance) {
+        int n = node.getNumOfInstances();
+        // TODO log or log2
+        R = Math.log(instance.numClasses());
+        return Math.sqrt( Math.pow(R, 2) * Math.log(1 / delta) / (2 * n) );
     }
 }
