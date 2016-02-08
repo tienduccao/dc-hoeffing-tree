@@ -5,8 +5,7 @@ import tree.DCHoeffdingTree;
 import weka.core.Instance;
 
 /**
- * // TODO update doc of Naive Bayes option
- * LearningNode with Naive Bayes method
+ * LearningNode which uses Naive Bayes for predicting class of leaf
  */
 public class LearningNodeNB extends ActiveLearningNode {
 

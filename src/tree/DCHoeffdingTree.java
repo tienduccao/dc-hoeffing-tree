@@ -53,7 +53,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
     public ClassOption splitCriterionOption = new ClassOption(
             "splitCriterion",
             's',
-            "Split criterion to use.", 
+            "Split criterion to use.",
             SplitCriterion.class,
             "InfoGainSplitCriterion");
 
