@@ -300,4 +300,9 @@ public class DCHoeffdingTree extends AbstractClassifier {
             }
         }
     }
+
+    public static double computeHoeffdingBound(double range, double confidence, double n) {
+        return Math.sqrt(((range * range) * Math.log(1.0 / confidence))
+                / (2.0 * n));
+    }
 }
