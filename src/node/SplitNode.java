@@ -23,10 +23,6 @@ public class SplitNode extends Node {
     }
 
     public void setChild(int index, Node child) {
-        if ((this.splitTest.maxBranches() >= 0)
-                && (index >= this.splitTest.maxBranches())) {
-            throw new IndexOutOfBoundsException();
-        }
         this.children.set(index, child);
     }
 
