@@ -22,7 +22,7 @@ import weka.core.Instance;
 import java.util.Arrays;
 
 /**
- * Created by duccao on 08/02/16.
+ * Hoeffding Tree
  */
 public class DCHoeffdingTree extends AbstractClassifier {
     public IntOption nMinOption = new IntOption(
@@ -94,7 +94,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
 
         // find the leaf associated with this instance
         FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(instance, null, -1);
-        Node leafNode = foundNode.node;
+        Node leafNode = foundNode.leafNode;
         if (leafNode == null) {
             leafNode = newLearningNode();
             foundNode.parent.setChild(foundNode.parentBranch, leafNode);
@@ -133,7 +133,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
     public double[] getVotesForInstance(Instance inst) {
         if (this.treeRoot != null) {
             FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(inst, null, -1);
-            Node leafNode = foundNode.node;
+            Node leafNode = foundNode.leafNode;
             if (leafNode == null) {
                 leafNode = foundNode.parent;
             }

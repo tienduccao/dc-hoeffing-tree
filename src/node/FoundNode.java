@@ -1,17 +1,17 @@
 package node;
 
 /**
- * Wrapper of a node we found when filtering an instance to leaf
+ * Wrapper of a leaf we found when filtering an instance to corresponding leaf
  */
 public class FoundNode {
-    public Node node;
+    public Node leafNode;
 
     public SplitNode parent;
 
     public int parentBranch;
 
-    public FoundNode(Node node, SplitNode parent, int parentBranch) {
-        this.node = node;
+    public FoundNode(Node leafNode, SplitNode parent, int parentBranch) {
+        this.leafNode = leafNode;
         this.parent = parent;
         this.parentBranch = parentBranch;
     }

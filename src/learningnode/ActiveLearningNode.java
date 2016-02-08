@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by duccao on 08/02/16.
+ * LearningNode with Majority Class approach
  */
 public class ActiveLearningNode extends LearningNode {
 
