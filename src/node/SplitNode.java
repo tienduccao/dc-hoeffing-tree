@@ -30,16 +30,25 @@ public class SplitNode extends Node {
         return this.children.get(index);
     }
 
+    /**
+     * @param instance
+     * @param parent
+     * @param parentBranch
+     * @return The leaf corresponding to the given instance, split node and parent branch
+     */
     @Override
-    public FoundNode filterInstanceToLeaf(Instance inst, SplitNode parent, int parentBranch) {
-        int childIndex = this.splitTest.branchForInstance(inst);
-        if (childIndex >= 0) {
-            Node child = getChild(childIndex);
+    public FoundNode filterInstanceToLeaf(Instance instance, SplitNode parent, int parentBranch) {
+        // find the branch of this child node
+        int branch = this.splitTest.branchForInstance(instance);
+        if (branch >= 0) {
+            Node child = getChild(branch);
             if (child != null) {
-                return child.filterInstanceToLeaf(inst, this, childIndex);
+                return child.filterInstanceToLeaf(instance, this, branch);
             }
-            return new FoundNode(null, this, childIndex);
+
+            return new FoundNode(null, this, branch);
         }
+
         return new FoundNode(this, parent, parentBranch);
     }
 }
