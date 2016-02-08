@@ -112,7 +112,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
         }
 
         public AttributeSplitSuggestion[] getBestSplitSuggestions(
-                SplitCriterion criterion, HoeffdingTree ht) {
+                SplitCriterion criterion, DCHoeffdingTree ht) {
             List<AttributeSplitSuggestion> bestSuggestions = new LinkedList<AttributeSplitSuggestion>();
             double[] preSplitDist = this.observedClassDistribution.getArrayCopy();
             if (!ht.noPrePruneOption.isSet()) {
@@ -138,6 +138,20 @@ public class DCHoeffdingTree extends AbstractClassifier {
         public void disableAttribute(int attIndex) {
             this.attributeObservers.set(attIndex,
                     new NullAttributeClassObserver());
+        }
+    }
+
+    public static class InactiveLearningNode extends LearningNode {
+
+        private static final long serialVersionUID = 1L;
+
+        public InactiveLearningNode(double[] initialClassObservations) {
+            super(initialClassObservations);
+        }
+
+        @Override
+        public void learnFromInstance(Instance inst, DCHoeffdingTree ht) {
+            this.observedClassDistribution.addToValue((int) inst.classValue(), inst.weight());
         }
     }
 
@@ -299,6 +313,18 @@ public class DCHoeffdingTree extends AbstractClassifier {
 //                enforceTrackerLimit();
             }
         }
+    }
+
+    protected void deactivateLearningNode(ActiveLearningNode toDeactivate,
+                                          SplitNode parent, int parentBranch) {
+        Node newLeaf = new InactiveLearningNode(toDeactivate.getObservedClassDistribution());
+        if (parent == null) {
+            this.treeRoot = newLeaf;
+        } else {
+            parent.setChild(parentBranch, newLeaf);
+        }
+        this.activeLeafNodeCount--;
+        this.inactiveLeafNodeCount++;
     }
 
     public static double computeHoeffdingBound(double range, double confidence, double n) {
