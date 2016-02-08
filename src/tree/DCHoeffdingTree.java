@@ -27,8 +27,8 @@ import java.util.Arrays;
  * Created by duccao on 08/02/16.
  */
 public class DCHoeffdingTree extends AbstractClassifier {
-    public IntOption gracePeriodOption = new IntOption(
-            "gracePeriod",
+    public IntOption nMinOption = new IntOption(
+            "nMin",
             'g',
             "The number of instances a leaf should observe between split attempts.",
             200, 0, Integer.MAX_VALUE);
@@ -120,9 +120,10 @@ public class DCHoeffdingTree extends AbstractClassifier {
             ActiveLearningNode activeLearningNode = (ActiveLearningNode) leafNode;
             activeLearningNode.learnFromInstance(instance, this);
 
+            // observe at least nMin examples before trying to split
             double weightSeen = activeLearningNode.getWeightSeen();
             if (weightSeen - activeLearningNode.getWeightSeenAtLastSplitEvaluation()
-                    >= this.gracePeriodOption.getValue()) {
+                    >= this.nMinOption.getValue()) {
                 attemptToSplit(activeLearningNode, foundNode.parent, foundNode.parentBranch);
                 activeLearningNode.setWeightSeenAtLastSplitEvaluation(weightSeen);
             }
