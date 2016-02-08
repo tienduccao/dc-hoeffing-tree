@@ -5,7 +5,6 @@ import moa.classifiers.core.attributeclassobservers.AttributeClassObserver;
 import moa.classifiers.core.attributeclassobservers.NullAttributeClassObserver;
 import moa.classifiers.core.splitcriteria.SplitCriterion;
 import moa.core.AutoExpandVector;
-import moa.core.SizeOf;
 import tree.DCHoeffdingTree;
 import weka.core.Instance;
 
@@ -29,12 +28,6 @@ public class ActiveLearningNode extends LearningNode {
         super(initialClassObservations);
         this.weightSeenAtLastSplitEvaluation = getWeightSeen();
         this.isInitialized = false;
-    }
-
-    @Override
-    public int calcByteSize() {
-        return super.calcByteSize()
-                + (int) (SizeOf.fullSizeOf(this.attributeObservers));
     }
 
     @Override
