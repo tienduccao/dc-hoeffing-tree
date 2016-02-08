@@ -31,16 +31,30 @@ public class DCHoeffdingTree extends AbstractClassifier {
             "The number of instances a leaf should observe between split attempts.",
             200, 0, Integer.MAX_VALUE);
 
-    public ClassOption numericEstimatorOption = new ClassOption("numericEstimator",
-            'n', "Numeric estimator to use.", NumericAttributeClassObserver.class,
+    public IntOption nbThresholdOption = new IntOption(
+            "nbThreshold",
+            'q',
+            "The number of instances a leaf should observe before permitting Naive Bayes.",
+            0, 0, Integer.MAX_VALUE);
+
+    public ClassOption numericEstimatorOption = new ClassOption(
+            "numericEstimator",
+            'n', "Numeric estimator to use.",
+            NumericAttributeClassObserver.class,
             "GaussianNumericAttributeClassObserver");
 
-    public ClassOption nominalEstimatorOption = new ClassOption("nominalEstimator",
-            'd', "Nominal estimator to use.", DiscreteAttributeClassObserver.class,
+    public ClassOption nominalEstimatorOption = new ClassOption(
+            "nominalEstimator",
+            'd',
+            "Nominal estimator to use.",
+            DiscreteAttributeClassObserver.class,
             "NominalAttributeClassObserver");
 
-    public ClassOption splitCriterionOption = new ClassOption("splitCriterion",
-            's', "Split criterion to use.", SplitCriterion.class,
+    public ClassOption splitCriterionOption = new ClassOption(
+            "splitCriterion",
+            's',
+            "Split criterion to use.", 
+            SplitCriterion.class,
             "InfoGainSplitCriterion");
 
     public FloatOption splitConfidenceOption = new FloatOption(
@@ -53,15 +67,10 @@ public class DCHoeffdingTree extends AbstractClassifier {
             't', "Threshold below which a split will be forced to break ties.",
             0.05, 0.0, 1.0);
 
-    // TODO binary split
-    public FlagOption binarySplitsOption = new FlagOption("binarySplits", 'b',
+    public FlagOption binarySplitsOption = new FlagOption(
+            "binarySplits",
+            'b',
             "Only allow binary splits.");
-
-    public IntOption nbThresholdOption = new IntOption(
-            "nbThreshold",
-            'q',
-            "The number of instances a leaf should observe before permitting Naive Bayes.",
-            0, 0, Integer.MAX_VALUE);
 
     /************************************************************
      *** Variables
