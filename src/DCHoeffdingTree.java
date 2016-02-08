@@ -1,4 +1,5 @@
 import moa.classifiers.AbstractClassifier;
+import moa.classifiers.bayes.NaiveBayes;
 import moa.classifiers.core.AttributeSplitSuggestion;
 import moa.classifiers.core.attributeclassobservers.AttributeClassObserver;
 import moa.classifiers.core.attributeclassobservers.DiscreteAttributeClassObserver;
@@ -57,6 +58,12 @@ public class DCHoeffdingTree extends AbstractClassifier {
     public FlagOption binarySplitsOption = new FlagOption("binarySplits", 'b',
             "Only allow binary splits.");
 
+    public IntOption nbThresholdOption = new IntOption(
+            "nbThreshold",
+            'q',
+            "The number of instances a leaf should observe before permitting Naive Bayes.",
+            0, 0, Integer.MAX_VALUE);
+
     /************************************************************
      *** Variables
      ************************************************************/
@@ -68,6 +75,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
 
     protected int inactiveLeafNodeCount;
 
+    // TODO move ActiveLearningNode and its subclasses out of DCHoeffdingTree
     public static class ActiveLearningNode extends LearningNode {
 
         private static final long serialVersionUID = 1L;
@@ -165,6 +173,30 @@ public class DCHoeffdingTree extends AbstractClassifier {
         }
     }
 
+    public static class LearningNodeNB extends ActiveLearningNode {
+
+        private static final long serialVersionUID = 1L;
+
+        public LearningNodeNB(double[] initialClassObservations) {
+            super(initialClassObservations);
+        }
+
+        @Override
+        public double[] getClassVotes(Instance inst, DCHoeffdingTree ht) {
+            if (getWeightSeen() >= ht.nbThresholdOption.getValue()) {
+                return NaiveBayes.doNaiveBayesPrediction(inst,
+                        this.observedClassDistribution,
+                        this.attributeObservers);
+            }
+            return super.getClassVotes(inst, ht);
+        }
+
+        @Override
+        public void disableAttribute(int attIndex) {
+            // should not disable poor atts - they are used in NB calc
+        }
+    }
+
     /************************************************************
      *** Methods from AbstractClassifier
      ************************************************************/
@@ -252,7 +284,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
 
     // TODO other options for LearningNode
     protected LearningNode newLearningNode(double[] initialClassObservations) {
-        return new ActiveLearningNode(initialClassObservations);
+        return new LearningNodeNB(initialClassObservations);
     }
 
     protected AttributeClassObserver newNominalClassObserver() {
