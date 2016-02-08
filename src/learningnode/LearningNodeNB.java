@@ -5,7 +5,8 @@ import tree.DCHoeffdingTree;
 import weka.core.Instance;
 
 /**
- * Created by duccao on 08/02/16.
+ * // TODO update doc of Naive Bayes option
+ * LearningNode with Naive Bayes method
  */
 public class LearningNodeNB extends ActiveLearningNode {
 
@@ -16,12 +17,14 @@ public class LearningNodeNB extends ActiveLearningNode {
     }
 
     @Override
-    public double[] getClassVotes(Instance inst, DCHoeffdingTree ht) {
+    public double[] getClassVotes(Instance instance, DCHoeffdingTree ht) {
         if (getWeightSeen() >= ht.nbThresholdOption.getValue()) {
-            return NaiveBayes.doNaiveBayesPrediction(inst,
+            return NaiveBayes.doNaiveBayesPrediction(
+                    instance,
                     this.observedClassDistribution,
-                    this.attributeObservers);
+                    this.attributeObservers
+            );
         }
-        return super.getClassVotes(inst, ht);
+        return super.getClassVotes(instance, ht);
     }
 }
