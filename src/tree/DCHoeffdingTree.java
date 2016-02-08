@@ -1,3 +1,9 @@
+package tree;
+
+import learningnode.ActiveLearningNode;
+import learningnode.InactiveLearningNode;
+import learningnode.LearningNode;
+import learningnode.LearningNodeNB;
 import moa.classifiers.AbstractClassifier;
 import moa.classifiers.core.AttributeSplitSuggestion;
 import moa.classifiers.core.attributeclassobservers.AttributeClassObserver;
@@ -10,6 +16,9 @@ import moa.options.ClassOption;
 import moa.options.FlagOption;
 import moa.options.FloatOption;
 import moa.options.IntOption;
+import node.FoundNode;
+import node.Node;
+import node.SplitNode;
 import weka.core.Instance;
 
 import java.util.Arrays;
@@ -152,6 +161,10 @@ public class DCHoeffdingTree extends AbstractClassifier {
     /************************************************************
      *** HoeffdingTree implementation
      ************************************************************/
+    public Node getTreeRoot() {
+        return treeRoot;
+    }
+
     protected LearningNode newLearningNode() {
         return newLearningNode(new double[0]);
     }
@@ -161,12 +174,12 @@ public class DCHoeffdingTree extends AbstractClassifier {
         return new LearningNodeNB(initialClassObservations);
     }
 
-    protected AttributeClassObserver newNominalClassObserver() {
+    public AttributeClassObserver newNominalClassObserver() {
         AttributeClassObserver nominalClassObserver = (AttributeClassObserver) getPreparedClassOption(this.nominalEstimatorOption);
         return (AttributeClassObserver) nominalClassObserver.copy();
     }
 
-    protected AttributeClassObserver newNumericClassObserver() {
+    public AttributeClassObserver newNumericClassObserver() {
         AttributeClassObserver numericClassObserver = (AttributeClassObserver) getPreparedClassOption(this.numericEstimatorOption);
         return (AttributeClassObserver) numericClassObserver.copy();
     }

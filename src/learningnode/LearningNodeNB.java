@@ -1,4 +1,7 @@
+package learningnode;
+
 import moa.classifiers.bayes.NaiveBayes;
+import tree.DCHoeffdingTree;
 import weka.core.Instance;
 
 /**

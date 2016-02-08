@@ -1,9 +1,12 @@
+package learningnode;
+
 import moa.classifiers.core.AttributeSplitSuggestion;
 import moa.classifiers.core.attributeclassobservers.AttributeClassObserver;
 import moa.classifiers.core.attributeclassobservers.NullAttributeClassObserver;
 import moa.classifiers.core.splitcriteria.SplitCriterion;
 import moa.core.AutoExpandVector;
 import moa.core.SizeOf;
+import tree.DCHoeffdingTree;
 import weka.core.Instance;
 
 import java.util.LinkedList;

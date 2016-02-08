@@ -1,7 +1,10 @@
+package node;
+
 import moa.AbstractMOAObject;
 import moa.core.DoubleVector;
 import moa.core.SizeOf;
 import moa.core.StringUtils;
+import tree.DCHoeffdingTree;
 import weka.core.Instance;
 
 /**
@@ -46,7 +49,7 @@ public class Node extends AbstractMOAObject {
         return this.observedClassDistribution.numNonZeroEntries() < 2;
     }
 
-    public void describeSubtree(HoeffdingTree ht, StringBuilder out,
+    public void describeSubtree(DCHoeffdingTree ht, StringBuilder out,
                                 int indent) {
         StringUtils.appendIndented(out, indent, "Leaf ");
         out.append(ht.getClassNameString());
@@ -54,7 +57,7 @@ public class Node extends AbstractMOAObject {
         out.append(ht.getClassLabelString(this.observedClassDistribution.maxIndex()));
         out.append(" weights: ");
         this.observedClassDistribution.getSingleLineDescription(out,
-                ht.treeRoot.observedClassDistribution.numValues());
+                ht.getTreeRoot().observedClassDistribution.numValues());
         StringUtils.appendNewline(out);
     }
 

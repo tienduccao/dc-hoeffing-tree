@@ -1,7 +1,10 @@
+package node;
+
 import moa.classifiers.core.conditionaltests.InstanceConditionalTest;
 import moa.core.AutoExpandVector;
 import moa.core.SizeOf;
 import moa.core.StringUtils;
+import tree.DCHoeffdingTree;
 import weka.core.Instance;
 
 /**
@@ -87,7 +90,7 @@ public class SplitNode extends Node {
     }
 
     @Override
-    public void describeSubtree(HoeffdingTree ht, StringBuilder out,
+    public void describeSubtree(DCHoeffdingTree ht, StringBuilder out,
                                 int indent) {
         for (int branch = 0; branch < numChildren(); branch++) {
             Node child = getChild(branch);
