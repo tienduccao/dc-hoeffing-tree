@@ -24,9 +24,4 @@ public class LearningNodeNB extends ActiveLearningNode {
         }
         return super.getClassVotes(inst, ht);
     }
-
-    @Override
-    public void disableAttribute(int attIndex) {
-        // should not disable poor atts - they are used in NB calc
-    }
 }
