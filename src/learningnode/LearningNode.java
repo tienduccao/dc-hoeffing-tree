@@ -5,7 +5,7 @@ import tree.DCHoeffdingTree;
 import weka.core.Instance;
 
 /**
- * Created by duccao on 08/02/16.
+ * Base class for nodes which can learn from incoming instances
  */
 public abstract class LearningNode extends Node {
 
