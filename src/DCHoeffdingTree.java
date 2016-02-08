@@ -4,6 +4,7 @@ import moa.classifiers.core.attributeclassobservers.AttributeClassObserver;
 import moa.classifiers.core.attributeclassobservers.DiscreteAttributeClassObserver;
 import moa.classifiers.core.attributeclassobservers.NullAttributeClassObserver;
 import moa.classifiers.core.attributeclassobservers.NumericAttributeClassObserver;
+import moa.classifiers.core.conditionaltests.InstanceConditionalTest;
 import moa.classifiers.core.splitcriteria.SplitCriterion;
 import moa.core.AutoExpandVector;
 import moa.core.Measurement;
@@ -325,6 +326,11 @@ public class DCHoeffdingTree extends AbstractClassifier {
         }
         this.activeLeafNodeCount--;
         this.inactiveLeafNodeCount++;
+    }
+
+    protected SplitNode newSplitNode(InstanceConditionalTest splitTest,
+                                     double[] classObservations, int size) {
+        return new SplitNode(splitTest, classObservations, size);
     }
 
     public static double computeHoeffdingBound(double range, double confidence, double n) {
