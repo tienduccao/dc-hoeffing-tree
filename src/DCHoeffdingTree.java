@@ -144,4 +144,12 @@ public class DCHoeffdingTree extends AbstractClassifier {
     /************************************************************
      *** HoeffdingTree implementation
      ************************************************************/
+    protected LearningNode newLearningNode() {
+        return newLearningNode(new double[0]);
+    }
+
+    // TODO other options for LearningNode
+    protected LearningNode newLearningNode(double[] initialClassObservations) {
+        return new ActiveLearningNode(initialClassObservations);;
+    }
 }
