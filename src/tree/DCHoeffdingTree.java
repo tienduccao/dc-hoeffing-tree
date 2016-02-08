@@ -73,21 +73,12 @@ public class DCHoeffdingTree extends AbstractClassifier {
      ************************************************************/
     protected Node treeRoot;
 
-    protected int decisionNodeCount;
-
-    protected int activeLeafNodeCount;
-
-    protected int inactiveLeafNodeCount;
-
     /************************************************************
      *** Methods from AbstractClassifier
      ************************************************************/
     @Override
     public void resetLearningImpl() {
         this.treeRoot = null;
-        this.decisionNodeCount = 0;
-        this.activeLeafNodeCount = 0;
-        this.inactiveLeafNodeCount = 0;
         // TODO other options
 //        this.inactiveLeafByteSizeEstimate = 0.0;
 //        this.activeLeafByteSizeEstimate = 0.0;
@@ -103,7 +94,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
         // Initialize the root (if necessary)
         if (this.treeRoot == null) {
             this.treeRoot = newLearningNode();
-            this.activeLeafNodeCount = 1;
         }
 
         // find the leaf associated with this instance
@@ -112,7 +102,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
         if (leafNode == null) {
             leafNode = newLearningNode();
             foundNode.parent.setChild(foundNode.parentBranch, leafNode);
-            this.activeLeafNodeCount++;
         }
 
         if (leafNode instanceof ActiveLearningNode) {
@@ -226,10 +215,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
                         newSplit.setChild(i, newChild);
                     }
 
-                    this.activeLeafNodeCount--;
-                    this.decisionNodeCount++;
-                    this.activeLeafNodeCount += splitDecision.numSplits();
-
                     if (parent == null) {
                         this.treeRoot = newSplit;
                     } else {
@@ -251,8 +236,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
         } else {
             parent.setChild(parentBranch, newLeaf);
         }
-        this.activeLeafNodeCount--;
-        this.inactiveLeafNodeCount++;
     }
 
     public static double computeHoeffdingBound(double range, double confidence, double n) {
