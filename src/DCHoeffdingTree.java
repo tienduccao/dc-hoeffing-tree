@@ -9,6 +9,7 @@ import moa.core.AutoExpandVector;
 import moa.core.Measurement;
 import moa.core.SizeOf;
 import moa.options.ClassOption;
+import moa.options.FloatOption;
 import moa.options.IntOption;
 import weka.core.Instance;
 
@@ -31,6 +32,20 @@ public class DCHoeffdingTree extends AbstractClassifier {
     public ClassOption nominalEstimatorOption = new ClassOption("nominalEstimator",
             'd', "Nominal estimator to use.", DiscreteAttributeClassObserver.class,
             "NominalAttributeClassObserver");
+
+    public ClassOption splitCriterionOption = new ClassOption("splitCriterion",
+            's', "Split criterion to use.", SplitCriterion.class,
+            "InfoGainSplitCriterion");
+
+    public FloatOption splitConfidenceOption = new FloatOption(
+            "splitConfidence",
+            'c',
+            "The allowable error in split decision, values closer to 0 will take longer to decide.",
+            0.0000001, 0.0, 1.0);
+
+    public FloatOption tieThresholdOption = new FloatOption("tieThreshold",
+            't', "Threshold below which a split will be forced to break ties.",
+            0.05, 0.0, 1.0);
 
     /************************************************************
      *** Variables
@@ -225,37 +240,39 @@ public class DCHoeffdingTree extends AbstractClassifier {
                     shouldSplit = true;
                 }
                 // }
-                if ((this.removePoorAttsOption != null)
-                        && this.removePoorAttsOption.isSet()) {
-                    Set<Integer> poorAtts = new HashSet<Integer>();
-                    // scan 1 - add any poor to set
-                    for (int i = 0; i < bestSplitSuggestions.length; i++) {
-                        if (bestSplitSuggestions[i].splitTest != null) {
-                            int[] splitAtts = bestSplitSuggestions[i].splitTest.getAttsTestDependsOn();
-                            if (splitAtts.length == 1) {
-                                if (bestSuggestion.merit
-                                        - bestSplitSuggestions[i].merit > hoeffdingBound) {
-                                    poorAtts.add(new Integer(splitAtts[0]));
-                                }
-                            }
-                        }
-                    }
-                    // scan 2 - remove good ones from set
-                    for (int i = 0; i < bestSplitSuggestions.length; i++) {
-                        if (bestSplitSuggestions[i].splitTest != null) {
-                            int[] splitAtts = bestSplitSuggestions[i].splitTest.getAttsTestDependsOn();
-                            if (splitAtts.length == 1) {
-                                if (bestSuggestion.merit
-                                        - bestSplitSuggestions[i].merit < hoeffdingBound) {
-                                    poorAtts.remove(new Integer(splitAtts[0]));
-                                }
-                            }
-                        }
-                    }
-                    for (int poorAtt : poorAtts) {
-                        node.disableAttribute(poorAtt);
-                    }
-                }
+
+                // TODO remove poor attributes
+//                if ((this.removePoorAttsOption != null)
+//                        && this.removePoorAttsOption.isSet()) {
+//                    Set<Integer> poorAtts = new HashSet<Integer>();
+//                    // scan 1 - add any poor to set
+//                    for (int i = 0; i < bestSplitSuggestions.length; i++) {
+//                        if (bestSplitSuggestions[i].splitTest != null) {
+//                            int[] splitAtts = bestSplitSuggestions[i].splitTest.getAttsTestDependsOn();
+//                            if (splitAtts.length == 1) {
+//                                if (bestSuggestion.merit
+//                                        - bestSplitSuggestions[i].merit > hoeffdingBound) {
+//                                    poorAtts.add(new Integer(splitAtts[0]));
+//                                }
+//                            }
+//                        }
+//                    }
+//                    // scan 2 - remove good ones from set
+//                    for (int i = 0; i < bestSplitSuggestions.length; i++) {
+//                        if (bestSplitSuggestions[i].splitTest != null) {
+//                            int[] splitAtts = bestSplitSuggestions[i].splitTest.getAttsTestDependsOn();
+//                            if (splitAtts.length == 1) {
+//                                if (bestSuggestion.merit
+//                                        - bestSplitSuggestions[i].merit < hoeffdingBound) {
+//                                    poorAtts.remove(new Integer(splitAtts[0]));
+//                                }
+//                            }
+//                        }
+//                    }
+//                    for (int poorAtt : poorAtts) {
+//                        node.disableAttribute(poorAtt);
+//                    }
+//                }
             }
             if (shouldSplit) {
                 AttributeSplitSuggestion splitDecision = bestSplitSuggestions[bestSplitSuggestions.length - 1];
