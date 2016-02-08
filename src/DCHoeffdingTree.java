@@ -6,6 +6,7 @@ import moa.classifiers.core.splitcriteria.SplitCriterion;
 import moa.core.AutoExpandVector;
 import moa.core.Measurement;
 import moa.core.SizeOf;
+import moa.options.IntOption;
 import weka.core.Instance;
 
 import java.util.LinkedList;
@@ -15,6 +16,12 @@ import java.util.List;
  * Created by duccao on 08/02/16.
  */
 public class DCHoeffdingTree extends AbstractClassifier {
+    public IntOption gracePeriodOption = new IntOption(
+            "gracePeriod",
+            'g',
+            "The number of instances a leaf should observe between split attempts.",
+            200, 0, Integer.MAX_VALUE);
+    
     /************************************************************
      *** Variables
      ************************************************************/
@@ -49,7 +56,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
         }
 
         @Override
-        public void learnFromInstance(Instance inst, HoeffdingTree ht) {
+        public void learnFromInstance(Instance inst, DCHoeffdingTree ht) {
             if (this.isInitialized == false) {
                 this.attributeObservers = new AutoExpandVector<AttributeClassObserver>(inst.numAttributes());
                 this.isInitialized = true;
@@ -119,6 +126,32 @@ public class DCHoeffdingTree extends AbstractClassifier {
 
     @Override
     public void trainOnInstanceImpl(Instance inst) {
+        if (this.treeRoot == null) {
+            this.treeRoot = newLearningNode();
+            this.activeLeafNodeCount = 1;
+        }
+        FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(inst, null, -1);
+        Node leafNode = foundNode.node;
+        if (leafNode == null) {
+            leafNode = newLearningNode();
+            foundNode.parent.setChild(foundNode.parentBranch, leafNode);
+            this.activeLeafNodeCount++;
+        }
+
+        if (leafNode instanceof LearningNode) {
+            LearningNode learningNode = (LearningNode) leafNode;
+            learningNode.learnFromInstance(inst, this);
+            if (learningNode instanceof ActiveLearningNode) {
+                ActiveLearningNode activeLearningNode = (ActiveLearningNode) learningNode;
+                double weightSeen = activeLearningNode.getWeightSeen();
+                if (weightSeen - activeLearningNode.getWeightSeenAtLastSplitEvaluation()
+                        >= this.gracePeriodOption.getValue()) {
+                    attemptToSplit(activeLearningNode, foundNode.parent,
+                            foundNode.parentBranch);
+                    activeLearningNode.setWeightSeenAtLastSplitEvaluation(weightSeen);
+                }
+            }
+        }
     }
 
     @Override
@@ -150,6 +183,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
 
     // TODO other options for LearningNode
     protected LearningNode newLearningNode(double[] initialClassObservations) {
-        return new ActiveLearningNode(initialClassObservations);;
+        return new ActiveLearningNode(initialClassObservations);
     }
 }
