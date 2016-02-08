@@ -38,7 +38,7 @@ public class Node extends AbstractMOAObject {
         return this.observedClassDistribution.getArrayCopy();
     }
 
-    public double[] getClassVotes(Instance inst, HoeffdingTree ht) {
+    public double[] getClassVotes(Instance inst, DCHoeffdingTree ht) {
         return this.observedClassDistribution.getArrayCopy();
     }
 

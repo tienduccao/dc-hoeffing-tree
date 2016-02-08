@@ -170,7 +170,18 @@ public class DCHoeffdingTree extends AbstractClassifier {
      ************************************************************/
     @Override
     public void resetLearningImpl() {
-
+        this.treeRoot = null;
+        this.decisionNodeCount = 0;
+        this.activeLeafNodeCount = 0;
+        this.inactiveLeafNodeCount = 0;
+        // TODO other options
+//        this.inactiveLeafByteSizeEstimate = 0.0;
+//        this.activeLeafByteSizeEstimate = 0.0;
+//        this.byteSizeEstimateOverheadFraction = 1.0;
+//        this.growthAllowed = true;
+//        if (this.leafpredictionOption.getChosenIndex()>0) {
+//            this.removePoorAttsOption = null;
+//        }
     }
 
     @Override
@@ -219,7 +230,16 @@ public class DCHoeffdingTree extends AbstractClassifier {
     }
 
     @Override
-    public double[] getVotesForInstance(Instance instance) {
+    public double[] getVotesForInstance(Instance inst) {
+        if (this.treeRoot != null) {
+            FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(inst,
+                    null, -1);
+            Node leafNode = foundNode.node;
+            if (leafNode == null) {
+                leafNode = foundNode.parent;
+            }
+            return leafNode.getClassVotes(inst, this);
+        }
         return new double[0];
     }
 
