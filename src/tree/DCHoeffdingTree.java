@@ -74,14 +74,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
     @Override
     public void resetLearningImpl() {
         this.treeRoot = null;
-        // TODO other options
-//        this.inactiveLeafByteSizeEstimate = 0.0;
-//        this.activeLeafByteSizeEstimate = 0.0;
-//        this.byteSizeEstimateOverheadFraction = 1.0;
-//        this.growthAllowed = true;
-//        if (this.leafpredictionOption.getChosenIndex()>0) {
-//            this.removePoorAttsOption = null;
-//        }
     }
 
     @Override
@@ -148,7 +140,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
         return newLearningNode(new double[0]);
     }
 
-    // TODO other options for LearningNode
     protected LearningNode newLearningNode(double[] initialClassObservations) {
         return new LearningNodeNB(initialClassObservations);
     }
@@ -183,8 +174,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
                 shouldSplit =
                         bestSuggestion.merit - secondBestSuggestion.merit > hoeffdingBound ||
                         hoeffdingBound < this.tieThresholdOption.getValue();
-
-                // TODO remove poor attributes
             }
 
             // split
@@ -208,9 +197,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
                         parent.setChild(parentBranch, newSplit);
                     }
                 }
-
-                // TODO manage memory
-//                enforceTrackerLimit();
             }
         }
     }
