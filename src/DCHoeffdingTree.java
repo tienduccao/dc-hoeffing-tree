@@ -10,6 +10,7 @@ import moa.core.AutoExpandVector;
 import moa.core.Measurement;
 import moa.core.SizeOf;
 import moa.options.ClassOption;
+import moa.options.FlagOption;
 import moa.options.FloatOption;
 import moa.options.IntOption;
 import weka.core.Instance;
@@ -47,6 +48,14 @@ public class DCHoeffdingTree extends AbstractClassifier {
     public FloatOption tieThresholdOption = new FloatOption("tieThreshold",
             't', "Threshold below which a split will be forced to break ties.",
             0.05, 0.0, 1.0);
+
+    // TODO pre-prune
+    public FlagOption noPrePruneOption = new FlagOption("noPrePrune", 'p',
+            "Disable pre-pruning.");
+
+    // TODO binary split
+    public FlagOption binarySplitsOption = new FlagOption("binarySplits", 'b',
+            "Only allow binary splits.");
 
     /************************************************************
      *** Variables
