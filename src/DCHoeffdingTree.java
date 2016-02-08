@@ -7,6 +7,17 @@ import weka.core.Instance;
  */
 public class DCHoeffdingTree extends AbstractClassifier {
     /************************************************************
+     *** Variables
+     ************************************************************/
+    protected Node treeRoot;
+
+    protected int decisionNodeCount;
+
+    protected int activeLeafNodeCount;
+
+    protected int inactiveLeafNodeCount;
+
+    /************************************************************
      *** Methods from AbstractClassifier
      ************************************************************/
     @Override
@@ -15,8 +26,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
     }
 
     @Override
-    public void trainOnInstanceImpl(Instance instance) {
-
+    public void trainOnInstanceImpl(Instance inst) {
     }
 
     @Override
@@ -38,4 +48,8 @@ public class DCHoeffdingTree extends AbstractClassifier {
     public double[] getVotesForInstance(Instance instance) {
         return new double[0];
     }
+
+    /************************************************************
+     *** HoeffdingTree implementation
+     ************************************************************/
 }
