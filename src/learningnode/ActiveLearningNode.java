@@ -64,19 +64,6 @@ public class ActiveLearningNode extends LearningNode {
         List<AttributeSplitSuggestion> bestSuggestions = new LinkedList<>();
         double[] preSplitDistribution = this.observedClassDistribution.getArrayCopy();
 
-        if (!ht.noPrePruneOption.isSet()) {
-            // add null split as an option
-            // TODO why?
-            bestSuggestions.add(new AttributeSplitSuggestion(
-                    null,
-                    new double[0][],
-                    criterion.getMeritOfSplit(
-                        preSplitDistribution,
-                        new double[][]{preSplitDistribution}
-                    )
-            ));
-        }
-
         for (int attributeIndex = 0; attributeIndex < this.attributeObservers.size(); attributeIndex++) {
             AttributeClassObserver attributeClassObserver = this.attributeObservers.get(attributeIndex);
             if (attributeClassObserver != null) {

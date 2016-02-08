@@ -1,7 +1,6 @@
 package tree;
 
 import learningnode.ActiveLearningNode;
-import learningnode.InactiveLearningNode;
 import learningnode.LearningNode;
 import learningnode.LearningNodeNB;
 import moa.classifiers.AbstractClassifier;
@@ -53,10 +52,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
     public FloatOption tieThresholdOption = new FloatOption("tieThreshold",
             't', "Threshold below which a split will be forced to break ties.",
             0.05, 0.0, 1.0);
-
-    // TODO pre-prune
-    public FlagOption noPrePruneOption = new FlagOption("noPrePrune", 'p',
-            "Disable pre-pruning.");
 
     // TODO binary split
     public FlagOption binarySplitsOption = new FlagOption("binarySplits", 'b',
@@ -149,10 +144,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
     /************************************************************
      *** HoeffdingTree implementation
      ************************************************************/
-    public Node getTreeRoot() {
-        return treeRoot;
-    }
-
     protected LearningNode newLearningNode() {
         return newLearningNode(new double[0]);
     }
@@ -199,11 +190,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
             // split
             if (shouldSplit) {
                 AttributeSplitSuggestion splitDecision = bestSplitSuggestions[bestSplitSuggestions.length - 1];
-                if (splitDecision.splitTest == null) {
-                    // TODO what is this?
-                    // preprune - null wins
-                    deactivateLearningNode(node, parent, parentBranch);
-                } else {
+                if (splitDecision.splitTest != null) {
                     SplitNode newSplit = new SplitNode(
                             splitDecision.splitTest,
                             node.getObservedClassDistribution(),
@@ -225,16 +212,6 @@ public class DCHoeffdingTree extends AbstractClassifier {
                 // TODO manage memory
 //                enforceTrackerLimit();
             }
-        }
-    }
-
-    protected void deactivateLearningNode(ActiveLearningNode toDeactivate,
-                                          SplitNode parent, int parentBranch) {
-        Node newLeaf = new InactiveLearningNode(toDeactivate.getObservedClassDistribution());
-        if (parent == null) {
-            this.treeRoot = newLeaf;
-        } else {
-            parent.setChild(parentBranch, newLeaf);
         }
     }
 
