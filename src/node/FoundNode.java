@@ -1,7 +1,7 @@
 package node;
 
 /**
- * Created by duccao on 08/02/16.
+ * Wrapper of a node we found when filtering an instance to leaf
  */
 public class FoundNode {
     public Node node;

@@ -5,7 +5,7 @@ import moa.core.AutoExpandVector;
 import weka.core.Instance;
 
 /**
- * Created by duccao on 08/02/16.
+ * The nodes between tree's root and leaves
  */
 public class SplitNode extends Node {
 

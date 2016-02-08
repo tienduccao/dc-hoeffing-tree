@@ -6,7 +6,7 @@ import tree.DCHoeffdingTree;
 import weka.core.Instance;
 
 /**
- * Created by duccao on 08/02/16.
+ * Node of tree
  */
 public class Node extends AbstractMOAObject {
 
