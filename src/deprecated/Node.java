@@ -1,3 +1,5 @@
+package deprecated;
+
 import weka.core.Attribute;
 import weka.core.Instance;
 

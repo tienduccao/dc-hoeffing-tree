@@ -1,3 +1,5 @@
+package deprecated;
+
 import moa.classifiers.AbstractClassifier;
 import moa.core.Measurement;
 import weka.core.Attribute;
