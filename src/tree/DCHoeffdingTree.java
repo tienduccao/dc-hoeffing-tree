@@ -100,12 +100,15 @@ public class DCHoeffdingTree extends AbstractClassifier {
     }
 
     @Override
-    public void trainOnInstanceImpl(Instance inst) {
+    public void trainOnInstanceImpl(Instance instance) {
+        // Initialize the root (if necessary)
         if (this.treeRoot == null) {
             this.treeRoot = newLearningNode();
             this.activeLeafNodeCount = 1;
         }
-        FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(inst, null, -1);
+
+        // find the leaf associated with this instance
+        FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(instance, null, -1);
         Node leafNode = foundNode.node;
         if (leafNode == null) {
             leafNode = newLearningNode();
@@ -113,18 +116,15 @@ public class DCHoeffdingTree extends AbstractClassifier {
             this.activeLeafNodeCount++;
         }
 
-        if (leafNode instanceof LearningNode) {
-            LearningNode learningNode = (LearningNode) leafNode;
-            learningNode.learnFromInstance(inst, this);
-            if (learningNode instanceof ActiveLearningNode) {
-                ActiveLearningNode activeLearningNode = (ActiveLearningNode) learningNode;
-                double weightSeen = activeLearningNode.getWeightSeen();
-                if (weightSeen - activeLearningNode.getWeightSeenAtLastSplitEvaluation()
-                        >= this.gracePeriodOption.getValue()) {
-                    attemptToSplit(activeLearningNode, foundNode.parent,
-                            foundNode.parentBranch);
-                    activeLearningNode.setWeightSeenAtLastSplitEvaluation(weightSeen);
-                }
+        if (leafNode instanceof ActiveLearningNode) {
+            ActiveLearningNode activeLearningNode = (ActiveLearningNode) leafNode;
+            activeLearningNode.learnFromInstance(instance, this);
+
+            double weightSeen = activeLearningNode.getWeightSeen();
+            if (weightSeen - activeLearningNode.getWeightSeenAtLastSplitEvaluation()
+                    >= this.gracePeriodOption.getValue()) {
+                attemptToSplit(activeLearningNode, foundNode.parent, foundNode.parentBranch);
+                activeLearningNode.setWeightSeenAtLastSplitEvaluation(weightSeen);
             }
         }
     }
