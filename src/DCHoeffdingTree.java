@@ -1,11 +1,14 @@
 import moa.classifiers.AbstractClassifier;
 import moa.classifiers.core.AttributeSplitSuggestion;
 import moa.classifiers.core.attributeclassobservers.AttributeClassObserver;
+import moa.classifiers.core.attributeclassobservers.DiscreteAttributeClassObserver;
 import moa.classifiers.core.attributeclassobservers.NullAttributeClassObserver;
+import moa.classifiers.core.attributeclassobservers.NumericAttributeClassObserver;
 import moa.classifiers.core.splitcriteria.SplitCriterion;
 import moa.core.AutoExpandVector;
 import moa.core.Measurement;
 import moa.core.SizeOf;
+import moa.options.ClassOption;
 import moa.options.IntOption;
 import weka.core.Instance;
 
@@ -21,7 +24,15 @@ public class DCHoeffdingTree extends AbstractClassifier {
             'g',
             "The number of instances a leaf should observe between split attempts.",
             200, 0, Integer.MAX_VALUE);
-    
+
+    public ClassOption numericEstimatorOption = new ClassOption("numericEstimator",
+            'n', "Numeric estimator to use.", NumericAttributeClassObserver.class,
+            "GaussianNumericAttributeClassObserver");
+
+    public ClassOption nominalEstimatorOption = new ClassOption("nominalEstimator",
+            'd', "Nominal estimator to use.", DiscreteAttributeClassObserver.class,
+            "NominalAttributeClassObserver");
+
     /************************************************************
      *** Variables
      ************************************************************/
@@ -184,5 +195,15 @@ public class DCHoeffdingTree extends AbstractClassifier {
     // TODO other options for LearningNode
     protected LearningNode newLearningNode(double[] initialClassObservations) {
         return new ActiveLearningNode(initialClassObservations);
+    }
+
+    protected AttributeClassObserver newNominalClassObserver() {
+        AttributeClassObserver nominalClassObserver = (AttributeClassObserver) getPreparedClassOption(this.nominalEstimatorOption);
+        return (AttributeClassObserver) nominalClassObserver.copy();
+    }
+
+    protected AttributeClassObserver newNumericClassObserver() {
+        AttributeClassObserver numericClassObserver = (AttributeClassObserver) getPreparedClassOption(this.numericEstimatorOption);
+        return (AttributeClassObserver) numericClassObserver.copy();
     }
 }
