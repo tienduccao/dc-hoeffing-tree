@@ -18,7 +18,7 @@ public class Node extends AbstractMOAObject {
         this.observedClassDistribution = new DoubleVector(classObservations);
     }
 
-    public FoundNode filterInstanceToLeaf(Instance inst, SplitNode parent, int parentBranch) {
+    public FoundNode filterInstanceToLeaf(Instance instance, SplitNode parent, int parentBranch) {
         return new FoundNode(this, parent, parentBranch);
     }
 
@@ -30,7 +30,7 @@ public class Node extends AbstractMOAObject {
         return this.observedClassDistribution.getArrayCopy();
     }
 
-    public double[] getClassVotes(Instance inst, DCHoeffdingTree ht) {
+    public double[] getClassVotes(Instance instance, DCHoeffdingTree ht) {
         return this.observedClassDistribution.getArrayCopy();
     }
 

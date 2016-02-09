@@ -15,5 +15,5 @@ public abstract class LearningNode extends Node {
         super(initialClassObservations);
     }
 
-    public abstract void learnFromInstance(Instance inst, DCHoeffdingTree ht);
+    public abstract void learnFromInstance(Instance instance, DCHoeffdingTree ht);
 }
