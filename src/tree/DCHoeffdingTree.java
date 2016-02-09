@@ -93,7 +93,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
         }
 
         // find the leaf associated with this instance
-        FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(instance, null, -1);
+        FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(instance);
         Node leafNode = foundNode.leafNode;
         if (leafNode == null) {
             leafNode = newLearningNode();
@@ -132,7 +132,7 @@ public class DCHoeffdingTree extends AbstractClassifier {
     @Override
     public double[] getVotesForInstance(Instance inst) {
         if (this.treeRoot != null) {
-            FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(inst, null, -1);
+            FoundNode foundNode = this.treeRoot.filterInstanceToLeaf(inst);
             Node leafNode = foundNode.leafNode;
             if (leafNode == null) {
                 leafNode = foundNode.parent;
